@@ -3,6 +3,7 @@ import { Resume } from '../../types'
 import { cn } from '@cv/lib'
 import Link from 'next/link'
 import { Heading, Markdown } from '../atoms'
+import React from 'react'
 
 interface Props extends HTMLAttributes<HTMLDivElement> {
    resume: Resume
@@ -13,7 +14,7 @@ export const Education = memo<Props>(({ resume, className, ...rest }) => {
    // Generate stable keys for educations
    const getEducationKey = useCallback(
       (education: Resume['educations'][0], index: number) => {
-         return `education-${education.company}-${index}`
+         return `education-${education.school}-${index}`
       },
       []
    )
@@ -36,7 +37,7 @@ export const Education = memo<Props>(({ resume, className, ...rest }) => {
                            rel="noopener noreferrer"
                            className="text-left font-bold hover:underline"
                         >
-                           {education.company}
+                           {education.school}
                         </Link>
                         <div className="flex items-center gap-1.5">
                            {education.badges?.map((badge) => (
@@ -49,7 +50,7 @@ export const Education = memo<Props>(({ resume, className, ...rest }) => {
                            ))}
                         </div>
                      </div>
-                     <div className="italic">{`${education.start} - ${education.end || 'Present'}`}</div>
+                     <div>{`${education.start} - ${education.end || 'Present'}`}</div>
                   </div>
                   <div>{education.title}</div>
                   <div className="text-sm w-full text-black/70">

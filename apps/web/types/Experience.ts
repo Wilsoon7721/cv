@@ -1,4 +1,3 @@
-import { ReactNode } from 'react'
 import { Content } from './Content'
 
 export type Experience = {
@@ -6,7 +5,6 @@ export type Experience = {
    link?: string
    badges?: string[]
    title: string
-   logo: ReactNode
    start: string
    end?: string
    contents: Content[]

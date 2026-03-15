@@ -268,7 +268,7 @@ export const URL =
 
 export const WEBSITE = {
    url: URL,
-   image: `${URL}/me.jpg`,
+   image: `${URL}/me.png`,
    color: '#000',
    name: `${RESUME.name} - ${RESUME.summary}`,
    title: `${RESUME.name} - ${RESUME.summary}`,
@@ -330,16 +330,6 @@ export const defaultSEO: NextSeoProps = {
             type: 'image/png',
          },
       ],
-   },
-
-   twitter: {
-      handle: extractSocialHandle(RESUME.contact.twitter)
-         ? `@${extractSocialHandle(RESUME.contact.twitter)}`
-         : undefined,
-      site: extractSocialHandle(RESUME.contact.twitter)
-         ? `@${extractSocialHandle(RESUME.contact.twitter)}`
-         : undefined,
-      cardType: 'summary_large_image',
    },
 
    additionalMetaTags: [
@@ -405,21 +395,11 @@ export const defaultSEO: NextSeoProps = {
    additionalLinkTags: [
       {
          rel: 'icon',
-         href: '/favicon.ico',
-      },
-      {
-         rel: 'apple-touch-icon',
-         href: '/apple-icon-180.png',
-         sizes: '180x180',
+         href: '/logo.png',
       },
       {
          rel: 'manifest',
          href: '/manifest.json',
-      },
-      {
-         rel: 'alternate',
-         type: 'application/rss+xml',
-         href: '/feed.xml',
       },
    ],
 }

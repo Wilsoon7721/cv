@@ -3,6 +3,7 @@ import { Resume } from '../../types'
 import { cn } from '@cv/lib'
 import Link from 'next/link'
 import { Heading } from '../atoms'
+import React from 'react'
 
 interface Props extends HTMLAttributes<HTMLDivElement> {
    resume: Resume
@@ -22,7 +23,7 @@ export const Contributions = memo<Props>(({ resume, className, ...rest }) => {
                   title={contribution.description || contribution.name}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="border border-black border px-1.5 text-sm py-0.5 leading-tight transition-all duration-300 hover:scale-105"
+                  className="border border-black px-1.5 text-sm py-0.5 leading-tight transition-all duration-300 hover:scale-105"
                >
                   {contribution.name}
                </Link>

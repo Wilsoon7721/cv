@@ -9,3 +9,12 @@ declare module 'react' {
 
 export * from './Resume'
 export * from './Content'
+export * from './Contact'
+export * from './Contribution'
+export * from './Education'
+export * from './Experience'
+export * from './Location'
+export * from './Project'
+export * from './Skill'
+export * from './Technology'
+export * from './Certification'

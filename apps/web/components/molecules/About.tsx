@@ -3,6 +3,7 @@ import { Resume } from '../../types'
 import { cn } from '@cv/lib'
 import Link from 'next/link'
 import { Heading, Markdown } from '../atoms'
+import React from 'react'
 
 interface Props extends HTMLAttributes<HTMLDivElement> {
    resume: Resume

@@ -1,18 +1,11 @@
-import {
-   HTMLAttributes,
-   useEffect,
-   useState,
-   useCallback,
-   useMemo,
-   memo,
-} from 'react'
+import { HTMLAttributes, useEffect, useState, useCallback, memo } from 'react'
 import { cn } from '@cv/lib'
 import {
    useHashNavigation,
    useActiveSection,
    SectionId,
-   validateSections,
 } from '../../utils/navigation'
+import React from 'react'
 
 interface Props extends HTMLAttributes<HTMLDivElement> {}
 
@@ -28,10 +21,16 @@ interface Section {
 const sections: Section[] = [
    { id: 'header', title: 'Header', letter: 'H', visible: true },
    { id: 'about', title: 'About', letter: 'A', visible: true },
-   { id: 'experience', title: 'Experience', letter: 'E', visible: true },
-   { id: 'education', title: 'Education', letter: 'D', visible: true },
+   { id: 'experience', title: 'Experience', letter: 'Ex', visible: true },
+   { id: 'education', title: 'Education', letter: 'Ed', visible: true },
    { id: 'skills', title: 'Skills', letter: 'S', visible: true },
    { id: 'languages', title: 'Languages', letter: 'L', visible: true },
+   {
+      id: 'certifications',
+      title: 'Certifications',
+      letter: 'C',
+      visible: true,
+   },
    { id: 'projects', title: 'Projects', letter: 'P', visible: true },
    { id: 'contributions', title: 'Contributions', letter: 'C', visible: true },
 ]
@@ -40,14 +39,9 @@ const sections: Section[] = [
 export const Navigations = memo<Props>(({ className, ...rest }) => {
    const [isReady, setIsReady] = useState(false)
    const [hasErrors, setHasErrors] = useState(false)
+   const [validSections, setValidSections] = useState<Section[]>([])
    const { goToSection } = useHashNavigation()
    const activeSection = useActiveSection()
-
-   // Memoize visible sections to prevent recalculation
-   const visibleSections = useMemo(
-      () => sections.filter((section) => section.visible),
-      []
-   )
 
    // Memoize readiness check function
    const checkReadiness = useCallback(() => {
@@ -57,10 +51,10 @@ export const Navigations = memo<Props>(({ className, ...rest }) => {
             return false
          }
 
-         // Validate that all required sections exist
-         validateSections()
+         // Find sections that actually exist in the DOM
          const availableSections = sections.filter(
-            (section) => document.getElementById(section.id) !== null
+            (section) =>
+               document.getElementById(section.id) !== null && section.visible
          )
 
          if (availableSections.length === 0) {
@@ -69,6 +63,7 @@ export const Navigations = memo<Props>(({ className, ...rest }) => {
             return false
          }
 
+         setValidSections(availableSections)
          setIsReady(true)
          setHasErrors(false)
          return true
@@ -117,7 +112,7 @@ export const Navigations = memo<Props>(({ className, ...rest }) => {
    )
 
    // Don't render if there are errors or component isn't ready
-   if (hasErrors || !isReady || visibleSections.length === 0) {
+   if (hasErrors || !isReady || validSections.length === 0) {
       return null
    }
 
@@ -130,14 +125,14 @@ export const Navigations = memo<Props>(({ className, ...rest }) => {
          {...rest}
       >
          <div className="absolute flex gap-[1px] flex-col text-sm font-mono right-full mr-[1px]">
-            {visibleSections.map((section) => {
+            {validSections.map((section) => {
                try {
                   return (
                      <button
                         key={section.id}
                         onClick={() => handleSectionClick(section.id)}
                         className={cn(
-                           'transition-all uppercase duration-300 w-[24px] h-[24px] items-center justify-center flex',
+                           'transition-all capitalize duration-300 w-[24px] h-[24px] items-center justify-center flex',
                            activeSection === section.id
                               ? 'bg-black text-white'
                               : 'bg-white hover:bg-black hover:text-white'

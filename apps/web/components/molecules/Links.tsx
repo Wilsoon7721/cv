@@ -2,17 +2,25 @@ import { cn } from '@cv/lib'
 import { HTMLAttributes, memo } from 'react'
 import { Resume } from '../../types'
 import Link from 'next/link'
+import React from 'react'
+import { faEnvelope, faPhone } from '@fortawesome/pro-solid-svg-icons'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 
 interface Props extends HTMLAttributes<HTMLDivElement> {
    resume: Resume
 }
 
-// Memoized Links component
 export const Links = memo<Props>(({ resume, className, ...rest }) => {
    if (!resume.contact.email && !resume.contact.phone) return null
 
    return (
-      <div className={cn('flex gap-1.5 items-center', className)} {...rest}>
+      <div
+         className={cn(
+            'flex flex-wrap gap-1.5 items-center print:grid print:grid-cols-2 print:gap-x-4',
+            className
+         )}
+         {...rest}
+      >
          {resume.contact.email && (
             <Link
                href={`mailto:${resume.contact.email}`}
@@ -21,8 +29,11 @@ export const Links = memo<Props>(({ resume, className, ...rest }) => {
                rel="noopener noreferrer"
                className="flex items-center gap-1.5 hover:underline text-sm text-black/80"
             >
-               <div className="h-4 w-4 bg-black/80 min-w-4 min-h-4 rounded-full text-white flex justify-center items-center text-xs" />
-               {resume.contact.email}
+               <FontAwesomeIcon
+                  icon={faEnvelope}
+                  className="h-4 w-4 shrink-0"
+               />
+               <span className="print:inline">{resume.contact.email}</span>
             </Link>
          )}
 
@@ -34,8 +45,8 @@ export const Links = memo<Props>(({ resume, className, ...rest }) => {
                rel="noopener noreferrer"
                className="flex items-center gap-1.5 hover:underline text-sm text-black/80"
             >
-               <div className="h-4 w-4 bg-black/80 min-w-4 min-h-4 rounded-full text-white flex justify-center items-center text-xs" />
-               {resume.contact.phone}
+               <FontAwesomeIcon icon={faPhone} className="h-4 w-4 shrink-0" />
+               <span className="print:inline">{resume.contact.phone}</span>
             </Link>
          )}
       </div>

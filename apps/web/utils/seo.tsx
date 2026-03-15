@@ -238,7 +238,7 @@ export const createDefaultSEO = (
       {
          name: 'education',
          content: resume.educations
-            .map((edu) => `${edu.company} - ${edu.title}`)
+            .map((edu) => `${edu.school} - ${edu.title}`)
             .join('; '),
       },
       {
@@ -277,13 +277,7 @@ export const createDefaultSEO = (
 
    // Static link tags to avoid recreation
    const additionalLinkTags = [
-      // Favicons and Icons
-      { rel: 'icon', href: '/favicon.ico', sizes: 'any' },
-      {
-         rel: 'apple-touch-icon',
-         href: '/apple-icon-180.png',
-         sizes: '180x180',
-      },
+      { rel: 'icon', href: '/logo.png', sizes: 'any' },
       { rel: 'manifest', href: '/manifest.json' },
 
       // Performance optimization
@@ -620,7 +614,7 @@ export const ComprehensiveJsonLd: React.FC<ComprehensiveSEOProps> = React.memo(
                logo={computedValues.logoImage}
                description={computedValues.professionalDescription}
                address={computedValues.addressParts}
-               contactPoints={contactPoints}
+               contactPoint={contactPoints}
                sameAs={validSocialUrls}
                founder={{
                   name: resume.name,
@@ -691,14 +685,10 @@ export const ComprehensiveJsonLd: React.FC<ComprehensiveSEOProps> = React.memo(
                         'Thursday',
                         'Friday',
                      ],
-                     opens: '09:00',
-                     closes: '18:00',
+                     opens: '00:00',
+                     closes: '23:59',
                   },
                ]}
-               geo={{
-                  latitude: '0',
-                  longitude: '0',
-               }}
                aggregateRating={{
                   ratingValue: '5',
                   reviewCount: '50',

@@ -3,6 +3,7 @@ import { Resume } from '../../types'
 import { cn } from '@cv/lib'
 import Link from 'next/link'
 import { Heading, Markdown } from '../atoms'
+import React from 'react'
 
 interface Props extends HTMLAttributes<HTMLDivElement> {
    resume: Resume
@@ -49,7 +50,7 @@ export const Experience = memo<Props>(({ resume, className, ...rest }) => {
                            ))}
                         </div>
                      </div>
-                     <div className="italic">{`${experience.start} - ${experience.end || 'Present'}`}</div>
+                     <div>{`${experience.start} - ${experience.end || 'Present'}`}</div>
                   </div>
                   <div className="font-semibold flex items-center gap-1.5">
                      {experience.title}

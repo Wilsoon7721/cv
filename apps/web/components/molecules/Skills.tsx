@@ -2,25 +2,29 @@ import { HTMLAttributes, useMemo, memo } from 'react'
 import { Resume } from '../../types'
 import { cn } from '@cv/lib'
 import { Heading } from '../atoms'
+import React from 'react'
 
 interface Props extends HTMLAttributes<HTMLDivElement> {
    resume: Resume
 }
 
+const calculateYears = (startYear: number): number => {
+   let startDate = `${startYear}-01-01`
+   const start = new Date(startDate).getTime()
+   const now = new Date().getTime()
+   const years = (now - start) / (1000 * 60 * 60 * 24 * 365.25)
+   return Math.max(1, Math.floor(years))
+}
+
 // Memoized Skills component with optimized grouping logic
 export const Skills = memo<Props>(({ resume, className, ...rest }) => {
    const groups = useMemo(() => {
-      const records: Record<
-         number,
-         {
-            name: string
-            years: number
-         }[]
-      > = {}
+      const records: Record<number, { name: string; startYear: number }[]> = {}
 
       for (const skill of resume.skills) {
-         records[skill.years] = records[skill.years] || []
-         records[skill.years].push(skill)
+         let year = calculateYears(skill.startYear)
+         records[year] = records[year] || []
+         records[year].push(skill)
       }
 
       return records
@@ -59,7 +63,7 @@ export const Skills = memo<Props>(({ resume, className, ...rest }) => {
                            </div>
                         </td>
                         <td className="border py-1.5 border-border group-hover:border-transparent border-dotted text-nowrap whitespace-nowrap px-1.5">
-                           <span className="group-hover:bg-black/80 group-hover:text-white border text-black border-black group-hover:bg-black transition-all duration-300 inline-flex justify-center items-center text-center rounded-full w-6 h-6 min-w-6 min-h-6">
+                           <span className="group-hover:bg-black group-hover:text-white border text-black border-black transition-all duration-300 inline-flex justify-center items-center text-center rounded-full w-6 h-6 min-w-6 min-h-6">
                               {years}
                            </span>{' '}
                            years

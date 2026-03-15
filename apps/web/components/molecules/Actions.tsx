@@ -8,7 +8,10 @@ import {
    faFileJpg,
    faFileSvg,
    faHome,
+   faPrint,
+   faDownload,
 } from '@fortawesome/pro-solid-svg-icons'
+import { faLinkedin } from '@fortawesome/free-brands-svg-icons'
 import { RESUME } from '../../users'
 
 interface Props extends HTMLAttributes<HTMLDivElement> {
@@ -18,6 +21,12 @@ interface Props extends HTMLAttributes<HTMLDivElement> {
 // Memoized Actions component with optimized event handlers
 export const Actions = memo<Props>(({ resume, className, ...rest }) => {
    const homeHandler = useCallback(() => {
+      if (!resume.website) return
+
+      window.open(resume.website, '_blank')
+   }, [resume.website])
+
+   const linkedinHandler = useCallback(() => {
       if (!resume.contact.linkedin) return
 
       window.open(resume.contact.linkedin, '_blank')
@@ -110,38 +119,53 @@ export const Actions = memo<Props>(({ resume, className, ...rest }) => {
             <button
                onClick={homeHandler}
                type="button"
+               aria-label="Go to Website"
+               title="Go to Website"
+               className="transition-all bg-white uppercase duration-300 hover:bg-black hover:text-white w-[24px] h-[24px] items-center justify-center flex"
+            >
+               <FontAwesomeIcon icon={faHome} className="h-4 w-4" />
+            </button>
+            <button
+               onClick={linkedinHandler}
+               type="button"
                aria-label="Go to LinkedIn profile"
                title="Go to LinkedIn profile"
                className="transition-all bg-white uppercase duration-300 hover:bg-black hover:text-white w-[24px] h-[24px] items-center justify-center flex"
             >
-               <FontAwesomeIcon icon={faHome} className="h-4 w-4" />
+               <FontAwesomeIcon icon={faLinkedin} className="h-4 w-4" />
             </button>
             <button
                onClick={printHandler}
                type="button"
                aria-label="Print CV"
                title="Print CV"
-               className="transition-all bg-white uppercase duration-300 hover:bg-black hover:text-white w-[24px] py-1.5 items-center justify-center flex"
+               className="transition-all bg-white uppercase duration-300 hover:bg-black hover:text-white w-[24px] py-1.5 flex flex-col items-center justify-center gap-1.5"
             >
-               P<br />
-               r<br />
-               i<br />
-               n<br />t
+               <FontAwesomeIcon icon={faPrint} className="h-4 w-4" />
+               <span className="leading-[1.2]">
+                  P<br />
+                  r<br />
+                  i<br />
+                  n<br />t
+               </span>
             </button>
             <button
                onClick={downloadHandler}
                type="button"
                aria-label="Download CV PDF"
                title="Download CV PDF"
-               className="transition-all bg-white uppercase duration-300 hover:bg-black hover:text-white w-[24px] py-1.5 items-center justify-center flex"
+               className="transition-all bg-white uppercase duration-300 hover:bg-black hover:text-white w-[24px] py-1.5 flex flex-col items-center justify-center gap-1.5"
             >
-               D<br />
-               o<br />
-               w<br />
-               n<br />
-               l<br />
-               o<br />
-               a<br />d
+               <FontAwesomeIcon icon={faDownload} className="h-4 w-4" />
+               <span className="leading-[1.2]">
+                  D<br />
+                  o<br />
+                  w<br />
+                  n<br />
+                  l<br />
+                  o<br />
+                  a<br />d
+               </span>
             </button>
             <button
                onClick={exportHandler('svg')}

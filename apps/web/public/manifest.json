@@ -1,37 +1,27 @@
 {
-  "name": "Dmitrii Selikhov - CTO, Software Architect, Technical Lead",
-  "short_name": "Dmitrii Selikhov - CTO, Software Architect, Technical Lead",
-  "theme_color": "#ffffff",
-  "background_color": "#ffffff",
-  "scope": "/",
-  "start_url": "/?source=pwa",
-  "display": "fullscreen",
-  "lang": "en",
-  "orientation": "portrait",
+  "short_name": "Wilsoon7721",
+  "name": "Wilsoon7721 Personal Website",
   "icons": [
     {
-      "src": "manifest-icon-192.maskable.png",
-      "sizes": "192x192",
+      "src": "logo.png",
       "type": "image/png",
+      "sizes": "32x32 48x48"
+    },
+    {
+      "src": "logo192.png",
+      "type": "image/png",
+      "sizes": "192x192",
       "purpose": "any"
     },
     {
-      "src": "manifest-icon-192.maskable.png",
-      "sizes": "192x192",
+      "src": "logo512.png",
       "type": "image/png",
-      "purpose": "maskable"
-    },
-    {
-      "src": "manifest-icon-512.maskable.png",
       "sizes": "512x512",
-      "type": "image/png",
-      "purpose": "any"
-    },
-    {
-      "src": "manifest-icon-512.maskable.png",
-      "sizes": "512x512",
-      "type": "image/png",
       "purpose": "maskable"
     }
-  ]
+  ],
+  "start_url": "/",
+  "display": "standalone",
+  "theme_color": "#000000",
+  "background_color": "#ffffff"
 }

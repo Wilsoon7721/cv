@@ -1,4 +1,7 @@
 {
+   "compilerOptions": {
+      "jsx": "preserve"
+   },
    "extends": "@cv/tsconfig/nextjs.json",
    "include": [
       "next-env.d.ts",

@@ -8,10 +8,10 @@ export const AVAILABLE_SECTIONS = [
    'education',
    'skills',
    'languages',
+   'certifications',
    'projects',
    'contributions',
    'technologies',
-   'characteristics',
    'help',
    'actions',
 ] as const
@@ -161,43 +161,108 @@ export const useActiveSection = (): SectionId | null => {
             return
          }
 
+         // Keep track of the visibility state of each section
+         const visibilityStates = new Map<
+            SectionId,
+            { ratio: number; rect: DOMRectReadOnly | null }
+         >()
+
+         AVAILABLE_SECTIONS.forEach((id) => {
+            visibilityStates.set(id, { ratio: 0, rect: null })
+         })
+
          // Create intersection observer with optimized options
          const observer = new IntersectionObserver(
             (entries) => {
                try {
-                  // Find the section with the highest intersection ratio
-                  let maxRatio = 0
-                  let activeSectionId: SectionId | null = null
-
+                  // Update visibility states for changed entries
                   entries.forEach((entry) => {
-                     if (
-                        entry.isIntersecting &&
-                        entry.intersectionRatio > maxRatio
-                     ) {
-                        maxRatio = entry.intersectionRatio
-                        const sectionId = entry.target.id as SectionId
-                        if (AVAILABLE_SECTIONS.includes(sectionId)) {
+                     const sectionId = entry.target.id as SectionId
+                     if (AVAILABLE_SECTIONS.includes(sectionId)) {
+                        visibilityStates.set(sectionId, {
+                           ratio: entry.intersectionRatio,
+                           rect: entry.boundingClientRect,
+                        })
+                     }
+                  })
+
+                  let bestScore = -Infinity
+                  let activeSectionId: SectionId | null = null
+                  const viewportHeight =
+                     window.innerHeight || document.documentElement.clientHeight
+
+                  // For reading flow, users focus on the top half (around 1/3 down the screen)
+                  const focalPoint = viewportHeight * 0.35
+
+                  visibilityStates.forEach((state, sectionId) => {
+                     if (state.ratio > 0 && state.rect) {
+                        const visibleTop = Math.max(0, state.rect.top)
+                        const visibleBottom = Math.min(
+                           viewportHeight,
+                           state.rect.bottom
+                        )
+                        const visibleHeight = Math.max(
+                           0,
+                           visibleBottom - visibleTop
+                        )
+
+                        // 1. How much of the section is visible relative to ITS OWN height
+                        const sectionVisibilityRatio = state.ratio
+
+                        // 2. How much of the viewport this section covers
+                        const viewportCoverage = visibleHeight / viewportHeight
+
+                        // 3. Distance of the section's center or top edge to the focal point
+                        // Small sections are naturally shorter, so checking distance from their top edge OR center to focal point works better
+                        const elementTop = state.rect.top
+                        const elementBottom = state.rect.bottom
+
+                        // If the focal point is inside the element, horizontal distance is 0 (it's actively being read)
+                        let distanceFromFocalPoint = 0
+                        if (focalPoint < elementTop) {
+                           distanceFromFocalPoint = elementTop - focalPoint // Element is below focal point
+                        } else if (focalPoint > elementBottom) {
+                           distanceFromFocalPoint = focalPoint - elementBottom // Element is above focal point
+                        }
+
+                        const normalizedDistance = Math.max(
+                           0,
+                           1 - distanceFromFocalPoint / viewportHeight
+                        )
+
+                        // Combine metrics into a score
+                        let score = 0
+
+                        if (viewportCoverage > 0.6) {
+                           // If a section covers most of the screen, it wins heavily
+                           score = viewportCoverage * 10
+                        } else {
+                           // For smaller sections, priority goes heavily to elements that are completely visible AND close to the reading focal point
+                           score =
+                              sectionVisibilityRatio * 0.3 +
+                              normalizedDistance * 0.7
+                        }
+
+                        if (score > bestScore) {
+                           bestScore = score
                            activeSectionId = sectionId
                         }
                      }
                   })
 
-                  // If no section is intersecting, find the closest one based on position
-                  if (!activeSectionId) {
-                     const viewportCenter = window.innerHeight / 2
+                  // If no section is clearly winning, find the closest one to the top/center
+                  if (!activeSectionId && entries.length > 0) {
                      let closestDistance = Infinity
 
-                     entries.forEach((entry) => {
-                        const rect = entry.boundingClientRect
-                        const elementCenter = rect.top + rect.height / 2
-                        const distance = Math.abs(
-                           elementCenter - viewportCenter
-                        )
+                     visibilityStates.forEach((state, sectionId) => {
+                        if (state.rect) {
+                           // Prefer sections near the top third of the screen
+                           const targetY = viewportHeight * 0.33
+                           const elementTop = state.rect.top
+                           const distance = Math.abs(elementTop - targetY)
 
-                        if (distance < closestDistance) {
-                           closestDistance = distance
-                           const sectionId = entry.target.id as SectionId
-                           if (AVAILABLE_SECTIONS.includes(sectionId)) {
+                           if (distance < closestDistance) {
+                              closestDistance = distance
                               activeSectionId = sectionId
                            }
                         }
@@ -214,7 +279,7 @@ export const useActiveSection = (): SectionId | null => {
             {
                // Optimize for better performance
                root: null,
-               rootMargin: '-20% 0px -20% 0px', // Only trigger when section is well into viewport
+               rootMargin: '-10% 0px -10% 0px', // Adjusted to be slightly more forgiving for small sections
                threshold: [0, 0.1, 0.25, 0.5, 0.75, 1.0], // Multiple thresholds for accuracy
             }
          )
@@ -347,7 +412,7 @@ export const useKeyboardNavigation = (
 
             case 'End':
                event.preventDefault()
-               onNavigate('actions')
+               onNavigate('projects')
                break
          }
       }

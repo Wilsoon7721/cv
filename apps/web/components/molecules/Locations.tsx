@@ -3,7 +3,8 @@ import { Resume } from '../../types'
 import { cn } from '@cv/lib'
 import Link from 'next/link'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faGlobe } from '@fortawesome/pro-solid-svg-icons'
+import { faMapLocationDot } from '@fortawesome/pro-solid-svg-icons'
+import React from 'react'
 
 interface Props extends HTMLAttributes<HTMLDivElement> {
    resume: Resume
@@ -22,7 +23,7 @@ export const Locations = memo<Props>(({ resume, className, ...rest }) => {
                rel="noopener noreferrer"
                className="flex items-center gap-1.5 hover:underline text-sm text-black/80"
             >
-               <FontAwesomeIcon icon={faGlobe} className="h-4 w-4" />
+               <FontAwesomeIcon icon={faMapLocationDot} className="h-4 w-4" />
                {location.name}
             </Link>
          ))}

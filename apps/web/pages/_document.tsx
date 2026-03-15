@@ -26,8 +26,8 @@ export default function PagesDocument({
             <meta httpEquiv="content-style-type" content="text/css" />
             <meta httpEquiv="window-target" content="_top" />
             <link rel="manifest" href="/manifest.json" />
-            <link rel="icon" type="image/png" href="/favicon.png" />
-            <link rel="shortcut icon" type="image/x-icon" href="/favicon.png" />
+            <link rel="icon" type="image/png" href="/loco.png" />
+            <link rel="shortcut icon" type="image/x-icon" href="/loco.png" />
             <meta
                name="theme-color"
                content={WEBSITE.color}

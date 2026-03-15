@@ -17,6 +17,7 @@ import {
 } from '../constants'
 import { createDefaultSEO, ComprehensiveJsonLd } from '../utils/seo'
 import { useMemo } from 'react'
+import React from 'react'
 
 // Pre-compute static values to avoid recalculation
 const STATIC_DATA = {
@@ -178,7 +179,7 @@ export default function Home() {
          {
             name: 'education-background',
             content: RESUME.educations
-               .map((edu) => `${edu.title} at ${edu.company}`)
+               .map((edu) => `${edu.title} at ${edu.school}`)
                .join(', '),
          },
          {

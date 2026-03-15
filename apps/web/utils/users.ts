@@ -52,7 +52,7 @@ export const getAvailableUsers = (): string[] => {
    } catch (error) {
       console.error('Error reading users directory:', error)
       // Fallback to default user if directory reading fails
-      return ['idimetrix']
+      return ['wilsoon']
    }
 }
 
@@ -93,5 +93,5 @@ export const getUserResume = async (
  * Always returns 'idimetrix' as the primary user
  */
 export const getDefaultUser = (): string => {
-   return 'idimetrix'
+   return 'wilsoon'
 }

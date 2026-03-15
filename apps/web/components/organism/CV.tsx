@@ -15,12 +15,11 @@ import {
    Projects,
    Languages,
    Links,
-   Characteristics,
    Contributions,
-   Technologies,
-   Help,
+   Certifications,
    Navigations,
 } from '../molecules'
+import React from 'react'
 
 interface Props extends HTMLAttributes<HTMLDivElement> {
    resume: Resume
@@ -76,6 +75,55 @@ export const CV = memo<Props>(({ resume, className, ...rest }) => {
                   background-color: transparent;
                }
             }
+
+            @media print {
+               /* Hide default browser header/footer by forcing zero margin but keep document padding */
+               @page {
+                  margin: 0;
+               }
+
+               /* Convert flex container to block so negative margins don't conflict with gap */
+               #cv > div {
+                  display: block !important;
+               }
+
+               section:not(#header) {
+                  display: block;
+                  break-inside: avoid;
+                  border-top: 10mm solid transparent;
+                  margin-top: -10mm !important;
+                  margin-bottom: 2.25rem !important;
+               }
+
+               #header {
+                  display: flex !important;
+                  flex-direction: row !important;
+                  justify-content: space-between !important;
+                  border-top: none !important;
+                  margin-top: 0 !important;
+                  margin-bottom: 2.25rem !important;
+               }
+
+               #header > div:first-child {
+                  flex: 1;
+               }
+
+               #projects div,
+               #certifications div {
+                  break-inside: avoid;
+               }
+
+               h1,
+               h2,
+               h3 {
+                  break-after: avoid;
+               }
+            }
+
+            * {
+               -webkit-print-color-adjust: exact !important;
+               print-color-adjust: exact !important;
+            }
          `}</style>
 
          {/* Bug-free Navigations component */}
@@ -116,46 +164,55 @@ export const CV = memo<Props>(({ resume, className, ...rest }) => {
 
                {/* Main Content Sections */}
                <div className="flex w-full gap-9 flex-col">
-                  <section id="about">
-                     <About resume={resume} className="" />
-                  </section>
-
-                  <section id="help" className="hidden">
-                     <Help resume={resume} className="" />
-                  </section>
-
-                  <section id="technologies" className="hidden">
-                     <Technologies resume={resume} className="" />
-                  </section>
+                  {resume.about?.length > 0 && (
+                     <section id="about">
+                        <About resume={resume} className="" />
+                     </section>
+                  )}
                </div>
 
-               <section id="experience">
-                  <Experience resume={resume} className="" />
-               </section>
+               {resume.experiences?.length > 0 && (
+                  <section id="experience">
+                     <Experience resume={resume} className="" />
+                  </section>
+               )}
 
-               <section id="education">
-                  <Education resume={resume} className="" />
-               </section>
+               {resume.educations?.length > 0 && (
+                  <section id="education">
+                     <Education resume={resume} className="" />
+                  </section>
+               )}
 
-               <section id="skills">
-                  <Skills resume={resume} className="" />
-               </section>
+               {resume.skills?.length > 0 && (
+                  <section id="skills">
+                     <Skills resume={resume} className="" />
+                  </section>
+               )}
 
-               <section id="languages">
-                  <Languages resume={resume} className="" />
-               </section>
+               {resume.languages &&
+                  Object.keys(resume.languages).length > 0 && (
+                     <section id="languages">
+                        <Languages resume={resume} className="" />
+                     </section>
+                  )}
 
-               <section id="projects">
-                  <Projects resume={resume} className="" />
-               </section>
+               {(resume.certifications?.length ?? 0) > 0 && (
+                  <section id="certifications">
+                     <Certifications resume={resume} className="" />
+                  </section>
+               )}
 
-               <section id="characteristics" className="hidden">
-                  <Characteristics resume={resume} className="" />
-               </section>
+               {resume.projects?.length > 0 && (
+                  <section id="projects">
+                     <Projects resume={resume} className="" />
+                  </section>
+               )}
 
-               <section id="contributions">
-                  <Contributions resume={resume} className="" />
-               </section>
+               {resume.contributions?.length > 0 && (
+                  <section id="contributions">
+                     <Contributions resume={resume} className="" />
+                  </section>
+               )}
             </div>
 
             <section id="actions">

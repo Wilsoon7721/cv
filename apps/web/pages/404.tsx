@@ -19,6 +19,7 @@ import { WEBSITE } from '../constants'
 import { SEO } from '../utils/seo'
 import { useRouter } from 'next/router'
 import { useEffect, useState } from 'react'
+import React from 'react'
 
 export default function NotFoundPage() {
    const router = useRouter()

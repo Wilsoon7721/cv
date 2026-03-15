@@ -1,5 +1,6 @@
 import { HTMLAttributes, ElementType, memo } from 'react'
 import { cn } from '@cv/lib'
+import React from 'react'
 
 interface Props extends HTMLAttributes<HTMLDivElement> {
    level: 1 | 2 | 3 | 4 | 5 | 6
